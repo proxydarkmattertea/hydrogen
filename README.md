@@ -1,0 +1,2 @@
+# hydrogen
+A discord bot
