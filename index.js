@@ -16,11 +16,11 @@ const player = new Player(client, {
 client.player = player;
 
 client.on('messageCreate', async (message) => {
-    const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift();
     let guildQueue = client.player.getQueue(message.guild.id);
 
-    if(command === 'play') {
+    if(message.content.startsWith(prefix) && command === 'play') {
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
         let song = await queue.play(args.join(' ')).catch(_ => {
@@ -29,7 +29,7 @@ client.on('messageCreate', async (message) => {
         });
     }
 
-    if(command === 'playlist') {
+    if(message.content.startsWith(prefix) && command === 'playlist') {
         let queue = client.player.createQueue(message.guild.id);
         await queue.join(message.member.voice.channel);
         let song = await queue.playlist(args.join(' ')).catch(_ => {
@@ -38,59 +38,67 @@ client.on('messageCreate', async (message) => {
         });
     }
 
-    if(command === 'skip') {
+    if(message.content.startsWith(prefix) && command === 'skip') {
         guildQueue.skip();
     }
 
-    if(command === 'stop') {
+    if(message.content.startsWith(prefix) && command === 'stop') {
         guildQueue.stop();
     }
 
-    if(command === 'stoploop') {
-        guildQueue.setRepeatMode(RepeatMode.DISABLED); // disable repeat
+    if(message.content.startsWith(prefix) && command === 'stoploop') {
+        guildQueue.setRepeatMode(RepeatMode.DISABLED); // or 0 instead of RepeatMode.DISABLED
     }
 
-    if(command === 'loopsong') {
-        guildQueue.setRepeatMode(RepeatMode.SONG); // repeat song
+    if(message.content.startsWith(prefix) && command === 'loopsong') {
+        guildQueue.setRepeatMode(RepeatMode.SONG); // or 1 instead of RepeatMode.SONG
     }
 
-    if(command === 'looplist') {
-        guildQueue.setRepeatMode(RepeatMode.QUEUE); // repeat playlist
+    if(message.content.startsWith(prefix) && command === 'tloop') {
+        guildQueue.setRepeatMode(RepeatMode.QUEUE); // or 2 instead of RepeatMode.QUEUE
     }
 
-    if(command === 'seek') {
+    if(message.content.startsWith(prefix) && command === 'seek') {
         guildQueue.seek(parseInt(args[0]) * 1000);
     }
 
-    if(command === 'clearQueue') {
+    if(message.content.startsWith(prefix) && command === 'clear') {
         guildQueue.clearQueue();
     }
 
-    if(command === 'shuffle') {
+    if(message.content.startsWith(prefix) && command === 'shuffle') {
         guildQueue.shuffle();
     }
 
-    if(command === 'nowPlaying') {
-        console.log(`Now playing: ${guildQueue.nowPlaying}`);
-        // await interaction.reply(`Now playing: ${guildQueue.nowPlaying}`)
+    if(message.content.startsWith(prefix) && command === 'queue') {
+        console.log(guildQueue);
     }
 
-    if(command === 'pause') {
+    if(message.content.startsWith(prefix) && command === 'np') {
+        console.log(`Now playing: ${guildQueue.nowPlaying}`);
+        message.channel.send(`Now playing: ${guildQueue.nowPlaying}`);
+    }
+
+    if(message.content.startsWith(prefix) && command === 'pause') {
         guildQueue.setPaused(true);
     }
 
-    if(command === 'resume') {
+    if(message.content.startsWith(prefix) && command === 'resume') {
         guildQueue.setPaused(false);
     }
 
-    if(command === 'remove') {
+    if(message.content.startsWith(prefix) && command === 'remove') {
         guildQueue.remove(parseInt(args[0]));
     }
 
+    if(message.content.startsWith(prefix) && command === 'time') {
+        const ProgressBar = guildQueue.createProgressBar();
+        
+        // [======>              ][00:35/2:20]
+        console.log(ProgressBar.prettier);
+    }
 })
 
-/*
-Get Events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -101,9 +109,8 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-*/
 
-//Collections
+
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -113,13 +120,12 @@ for (const file of commandFiles) {
 	// With the key as the command name and the value as the exported module
 	client.commands.set(command.data.name, command);
 }
-
 // Ready check
 client.once('ready', () => {
     console.log('Ready!');
 });
 
-// Slash Commands
+// Commands?
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
