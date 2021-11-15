@@ -16,7 +16,8 @@ Changelog 11/14
   - Added new prefix requirement for commands that overrides the initial prefix length only
   - Renamed some of the commands to make it easier to request things
   - Added command "np" to show the current song playing in the chat
-  Plans:
+
+Plans:
   - Clean up/format
   - Add "playlist" or "queue" feature to get a list of queued songs (preferably via embedded messages)
   - Add reaction commands
