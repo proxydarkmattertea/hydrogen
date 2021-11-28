@@ -93,24 +93,13 @@ client.on('messageCreate', async (message) => {
 
     if(message.content.startsWith(prefix) && command === 'time') {
         const ProgressBar = guildQueue.createProgressBar();
-        
+
         // [======>              ][00:35/2:20]
         console.log(ProgressBar.prettier);
     }
 })
 
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
-}
-
-
+//Collections
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -120,12 +109,13 @@ for (const file of commandFiles) {
 	// With the key as the command name and the value as the exported module
 	client.commands.set(command.data.name, command);
 }
+
 // Ready check
 client.once('ready', () => {
     console.log('Ready!');
 });
 
-// Commands?
+// Slash Commands
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
 
