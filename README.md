@@ -9,7 +9,7 @@ Credits (Sources used)
 1. Discord.js v13 Documentation https://discordjs.guide/
 2. CodeLyon's Code Your Own Discord Bot (2021) Tutorials (Channel: https://www.youtube.com/channel/UC08G-UJT58SbkdmcOYyOQVw)
 3. Gabriel Tanner's How To Create a Music Bot Using Discord.js https://gabrieltanner.org/blog/dicord-music-bot
-4. npm's discord-music-player https://www.npmjs.com/package/discord-music-player
+4. npm's [sushibtw] discord-music-player https://www.npmjs.com/package/discord-music-player
 
 
 Changelog 11/14
