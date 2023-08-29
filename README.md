@@ -17,6 +17,11 @@ Changelog 11/27
   - Renamed some of the commands to make it easier to request things
   - Added command "np" to show the current song playing in the chat
 
+Changelog 8/29/23
+  - Updated index.js to work with discord.js v14 as the original was built on v13
+  - Removed music functionality due to errors, will fix later
+  - Used mainly discord.js guide for v14 to convert everything over
+
 Plans:
   - Clean up/format
   - Add "playlist" or "queue" feature to get a list of queued songs (preferably via embedded messages)
